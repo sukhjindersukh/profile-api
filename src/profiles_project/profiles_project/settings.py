@@ -121,3 +121,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+
+#Tell django use a custom user
+AUTH_USER_MODEL= 'profiles_api.UserProfile'
