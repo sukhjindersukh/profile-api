@@ -1,10 +1,28 @@
 from django.shortcuts import render
 from rest_framework.views import APIView
+from  rest_framework import viewsets
+
+
 from rest_framework.views import Response
 from rest_framework import status
 
 from . import serializers
+
 # Create your views here.
+#There are multiple views
+#1. APIView
+
+#2. ViewSet
+#   Use model operations for functions
+#    - List, Create, Retrieve, Update, Partial update, Destroy/Delete
+#   Take care lot of typically logic for us
+#       - Perfect for standard database operations
+#       - Fastest way to build database interface
+# When to use these
+#   - Perform Simple CRUD operations
+#   - Want to build simple and quick API
+#   - We need little or no customizations on logic
+
 class SampleAPIView(APIView):
     """-This is just an example- """
 
@@ -54,3 +72,18 @@ class SampleAPIView(APIView):
         message = 'Method {0} is called'.format('DELETE')
         return Response({'message': message})
 
+
+# TO USE SampleViewSet we need following import in our urls file
+#from rest_framework.routers import DefaultRouter
+class SampleViewSet(viewsets.ViewSet):
+    """Example of view set"""
+
+    def list(self,request):
+        """This will return a list of objects"""
+        message =[
+            'Use actions (list, create, retrieve, delete, update, partial_update)',
+            'Automatically maps to URLs using Rousters ',
+            'Provide more functionality with less code'
+        ]
+
+        return Response({'message':message})
