@@ -1,10 +1,16 @@
 from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.views import Response
+from rest_framework import status
 
+from . import serializers
 # Create your views here.
 class SampleAPIView(APIView):
     """-This is just an example- """
+
+    #Tell the django what serialize you want to use for this api
+    serializer_class = serializers.SampleSerializer
+
 
     def get(self,request,format=None):
         """This is a get call and return a list of Strings"""
@@ -21,3 +27,13 @@ class SampleAPIView(APIView):
 
         #Response always return a dictonary object, which is then converted to JSON
         return Response({'message':'Sample API call','data':features_of_API_View})
+
+    def post(self,request):
+        serializer = serializers.SampleSerializer(data=request.data)
+
+        if serializer.is_valid():
+            name= serializer.data.get('name')
+            message = 'Hello {0}'.format(name)
+            return Response({'message': message})
+        else:
+            return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
