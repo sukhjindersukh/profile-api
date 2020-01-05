@@ -37,3 +37,20 @@ class SampleAPIView(APIView):
             return Response({'message': message})
         else:
             return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
+
+    def put(self,request,pk=None):
+        '''Update the data'''
+        message = 'Method {0} is called'.format('PUT')
+        return Response({'message': message})
+
+    def patch(self,request,pk=None):
+        '''Update the partial data'''
+        message = 'Method {0} is called'.format('PATCH')
+        return Response({'message': message})
+
+
+    def delete(self,request,pk=None):
+        '''Delete the object'''
+        message = 'Method {0} is called'.format('DELETE')
+        return Response({'message': message})
+
