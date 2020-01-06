@@ -9,6 +9,8 @@ router = DefaultRouter()
 
 # Here we need to register our all viewSet with router
 router.register(r'sample-ViewSet', views.SampleViewSet, basename='sample-ViewSet')
+router.register('profile',views.UserProfileViewSet)
+
 
 urlpatterns = [
      path('sample-ApiView/',views.SampleAPIView.as_view()),

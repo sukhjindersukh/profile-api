@@ -66,8 +66,8 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
     # Object manager is also required because we are overriding AbstractBaseUser.
     # It provide us functionality to create a admin user or just a regular user
 
-    # We need to tell Django how to use our custom User model
-    objestc = UserProfileManager()
+    # We need to tell Django how to use our custom User model and this will be used to query all data objects.all()
+    objects = UserProfileManager()
 
     # We are telling system we will login using email. By default email is required field
     USERNAME_FIELD = 'email'

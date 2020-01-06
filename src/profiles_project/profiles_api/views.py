@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from rest_framework.parsers import JSONParser
 from rest_framework.views import APIView
 from  rest_framework import viewsets
 
@@ -7,6 +8,7 @@ from rest_framework.views import Response
 from rest_framework import status
 
 from . import serializers
+from . import models
 
 # Create your views here.
 #There are multiple views
@@ -28,7 +30,6 @@ class SampleAPIView(APIView):
 
     #Tell the django what serialize you want to use for this api
     serializer_class = serializers.SampleSerializer
-
 
     def get(self,request,format=None):
         """This is a get call and return a list of Strings"""
@@ -77,6 +78,7 @@ class SampleAPIView(APIView):
 #from rest_framework.routers import DefaultRouter
 class SampleViewSet(viewsets.ViewSet):
     """Example of view set"""
+    serializer_class = serializers.SampleSerializer
 
     def list(self,request):
         """This will return a list of objects"""
@@ -87,3 +89,41 @@ class SampleViewSet(viewsets.ViewSet):
         ]
 
         return Response({'message':message})
+
+    def create(self, request):
+        """Create method of a viewSet used as a post method"""
+        serializer = serializers.SampleSerializer(data=request.data)
+
+        if serializer.is_valid():
+            name= serializer.data.get('name')
+            message = 'Hello {0}'.format(name)
+            return Response({'message': message})
+        else:
+            return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
+
+    def retrieve(self, request, pk=None):
+        """This is GET method"""
+        message = 'Method {0} is called'.format('GET')
+        return Response({'message': message})
+
+    def update(self, request, pk=None):
+        """This is PUT method"""
+        message = 'Method {0} is called'.format('PUT')
+        return Response({'message': message})
+    #
+    def partial_update(self, request, pk=None):
+         """This is PATCH method"""
+         message = 'Method {0} is called'.format('PATCH')
+         return Response({'message': message})
+
+    def delete(self,request, pk=None):
+         """This is DELETE method"""
+         message = 'Method {0} is called'.format('DELETE')
+         return Response({'message': message})
+
+
+class UserProfileViewSet(viewsets.ModelViewSet):
+    """handle create, reading and update UserProfiles"""
+    serializer_class = serializers.UserProfileSerializer
+    queryset = models.UserProfile.objects.all()
+
