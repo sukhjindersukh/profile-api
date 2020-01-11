@@ -2,6 +2,7 @@ from django.shortcuts import render
 from rest_framework.parsers import JSONParser
 from rest_framework.views import APIView
 from  rest_framework import viewsets
+from rest_framework.authentication import TokenAuthentication
 
 
 from rest_framework.views import Response
@@ -9,6 +10,7 @@ from rest_framework import status
 
 from . import serializers
 from . import models
+from . import  permissions
 
 # Create your views here.
 #There are multiple views
@@ -126,4 +128,6 @@ class UserProfileViewSet(viewsets.ModelViewSet):
     """handle create, reading and update UserProfiles"""
     serializer_class = serializers.UserProfileSerializer
     queryset = models.UserProfile.objects.all()
+    authentication_classes = (TokenAuthentication,)# immutable tuple that cant be changed
+    permission_classes = (permissions.UpdateOwnProfile,)
 
