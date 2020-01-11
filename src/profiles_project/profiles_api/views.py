@@ -3,6 +3,7 @@ from rest_framework.parsers import JSONParser
 from rest_framework.views import APIView
 from  rest_framework import viewsets
 from rest_framework.authentication import TokenAuthentication
+from rest_framework import filters
 
 
 from rest_framework.views import Response
@@ -130,4 +131,6 @@ class UserProfileViewSet(viewsets.ModelViewSet):
     queryset = models.UserProfile.objects.all()
     authentication_classes = (TokenAuthentication,)# immutable tuple that cant be changed
     permission_classes = (permissions.UpdateOwnProfile,)
+    filter_backends = (filters.SearchFilter, )
+    search_fields =('name','email',)
 
