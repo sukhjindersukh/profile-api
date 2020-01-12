@@ -33,3 +33,14 @@ class UserProfileSerializer(serializers.ModelSerializer):
         user.save()
 
         return user
+
+class ProfileFeedItemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.ProfileFeedItem
+        fields =('id','user_profile','status_text','created_on')
+
+        # We dont want user to see the password It should be only Write only
+        extra_kwargs = {'user_profile': {
+            'read_only': True
+        }}
+

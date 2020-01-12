@@ -5,8 +5,10 @@ from rest_framework import filters
 
 from  rest_framework.authtoken.serializers import AuthTokenSerializer
 from rest_framework.authtoken.views import ObtainAuthToken
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
-
+# Must be registred in order to view some data We can use this permission
+from rest_framework.permissions import IsAuthenticated
 
 from rest_framework.views import Response
 from rest_framework import status
@@ -136,14 +138,26 @@ class UserProfileViewSet(viewsets.ModelViewSet):
     filter_backends = (filters.SearchFilter, )
     search_fields =('name','email',)
 
-
 class LoginViewSet(viewsets.ViewSet):
         """Check email and password and return a token"""
         serializer_class = AuthTokenSerializer
-
         # We will use post api to get the toke so we need to use create method for this view set
         def create(self,request):
             """Use the ObtainAuthToken APIView to validate and create token """
 
             #Built in API view from django
             return ObtainAuthToken().post(request)
+
+
+class UserProfileFeedViewSet(viewsets.ModelViewSet):
+    """Handles creating reading and update items"""
+    authentication_classes = (TokenAuthentication,)
+    serializer_class = serializers.ProfileFeedItemSerializer
+    queryset = models.ProfileFeedItem.objects.all()
+    # permission_classes = (permissions.PostOwnStatus,IsAuthenticated,) -> If we want only registered user can view some data
+    permission_classes = (permissions.PostOwnStatus,IsAuthenticatedOrReadOnly,)
+
+    # custome object creation and saving in db
+    def perform_create(self, serializer):
+        """Set the user profile to the logged in user """
+        serializer.save(user_profile=self.request.user)

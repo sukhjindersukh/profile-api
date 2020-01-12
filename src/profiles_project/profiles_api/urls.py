@@ -9,6 +9,7 @@ router = DefaultRouter()
 router.register(r'sample-ViewSet', views.SampleViewSet, basename='sample-ViewSet')
 router.register('profile',views.UserProfileViewSet)
 router.register('login',views.LoginViewSet, basename='login')
+router.register('feed',views.UserProfileFeedViewSet)
 
 
 urlpatterns = [
@@ -16,4 +17,3 @@ urlpatterns = [
 ]
 
 urlpatterns = urlpatterns + router.urls
-
