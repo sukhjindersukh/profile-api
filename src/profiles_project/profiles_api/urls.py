@@ -8,6 +8,7 @@ router = DefaultRouter()
 # Here we need to register our all viewSet with router
 router.register(r'sample-ViewSet', views.SampleViewSet, basename='sample-ViewSet')
 router.register('profile',views.UserProfileViewSet)
+router.register('login',views.LoginViewSet, basename='login')
 
 
 urlpatterns = [
